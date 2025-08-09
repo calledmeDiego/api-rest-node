@@ -1,8 +1,9 @@
+import { error } from "console";
 import * as Model from "../models/Product.js";
 
 const products = await Model.getDataProducts();
 
-export const getAllProducts = async (req, res) => {
+export const getAllProducts = (req, res) => {
   const { category } = req.query;
 
   if (category) {
@@ -48,4 +49,17 @@ export const createProduct = async (req, res) => {
   const {name, price, categories } = req.body;
   const product = await Model.postNewData({name, price, categories});
   res.status(201).json(product  );
+}
+
+export const deleteProduct = async (req, res) => {
+
+  const { id } = req.params;
+  const deleted = await Model.deleteData(id);
+  
+  if (!deleted) {
+    return res.status(404).json({
+      error: 'Producto no encontrado'
+    })
+  }
+  res.status(204).send();
 }

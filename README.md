@@ -98,3 +98,11 @@ npm run dev
 ```json
 [{ "id": "ID alfanumérico", "name": "Nuevo producto", "price": 999}]
 ```
+
+### Eliminar un producto
+
+- **DELETE** `/products/:id`
+- **Descripción:** Elimina un producto por su ID.
+- **Parámetros:**
+    - `id` (path, requerido): ID del producto a eliminar.
+- **Respuesta:** 204 No Content
