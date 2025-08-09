@@ -1,6 +1,6 @@
 import { db } from "./firebase.js";
 
-import { collection, doc, getDocs, getDoc } from "firebase/firestore"
+import { collection, doc, getDocs, getDoc, addDoc } from "firebase/firestore"
 
 const productsCollection = collection(db,"products")
 
@@ -33,5 +33,15 @@ export const getDataById = async (id) => {
     } catch (error) {
         console.error(`Error al obtener el producto con ID ${id}:`, error);
         
+    }
+}
+
+export const postNewData = async (data) => {
+    try {
+        const docRef = await addDoc(productsCollection,data);
+        return { id: docRef.id, ...data};
+    } catch (error) {
+        
+        console.error(error);
     }
 }
