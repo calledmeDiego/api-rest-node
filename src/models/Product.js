@@ -1,30 +1,37 @@
-const products = [
-  {
-    id: 1,
-    name: "Camiseta Deportiva",
-    price: 150,
-    categories: ["ropa", "deportes"],
-  },
-  {
-    id: 2,
-    name: "Zapatos Running",
-    price: 1200,
-    categories: ["calzado", "deportes"],
-  },
-  {
-    id: 3,
-    name: "Mochila Deportiva",
-    price: 350,
-    categories: ["mochilas", "deportes"],
-  },
-  {
-    id: 4,
-    name: "Auriculares HD",
-    price: 800,
-    categories: ["tecnología", "audio"],
-  },
-];
+import { db } from "./firebase.js";
 
-export const getDataProducts = () => {
-    return products;
+import { collection, doc, getDocs, getDoc } from "firebase/firestore"
+
+const productsCollection = collection(db,"products")
+
+export const getDataProducts = async () => {
+
+    try {
+        const snapshot = await getDocs(productsCollection);
+
+        return snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export const getDataById = async (id) => {
+
+    try {
+        const productRef = doc(productsCollection,id);
+
+        const snapshot = await getDoc(productRef);
+
+        return snapshot.exists() ? {
+            id: snapshot.id,
+            ...snapshot.data()
+        } : null;        
+        
+    } catch (error) {
+        console.error(`Error al obtener el producto con ID ${id}:`, error);
+        
+    }
 }

@@ -1,8 +1,8 @@
 import * as Model from "../models/Product.js";
 
-const products = Model.getDataProducts()
+const products = await Model.getDataProducts();
 
-export const getAllProducts = (req, res) => {
+export const getAllProducts = async (req, res) => {
   const { category } = req.query;
 
   if (category) {
@@ -16,7 +16,7 @@ export const getAllProducts = (req, res) => {
   }
 };
 
-export const searchProducts = (req, res) => {
+export const searchProducts = async (req, res) => {
   const { name } = req.query;
 
   if (!name) {
@@ -32,10 +32,10 @@ export const searchProducts = (req, res) => {
   return res.json(productsFiltered);
 };
 
-export const getProductById = (req, res) => {
-  const id = +req.params.id;
+export const getProductById = async (req, res) => {
+  const id = req.params.id;
 
-  const product = products.find((item) => item.id == id);
+  const product = await Model.getDataById(id);
 
   if (!product) {
     return res.status(404).json({ error: "No existe el producto" });
